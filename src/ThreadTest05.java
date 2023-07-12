@@ -30,9 +30,14 @@ class Thread05 extends Frame implements Runnable{
 		while(true) {
 			try{
 				Thread.sleep(100);//스레드를 일정시간 대기상태로 둔다.(밀리세컨드 단위 ; 1000->1초)
-			}catch(InterruptedException ie) {}
+			}catch(InterruptedException ie) {
+				
+				System.out.println(ie.getMessage());
+				
+			}
+			
 			repaint();//다시 그리고자 그리기 메서드 호출
-			x+=5; //스레드에 의해서 x좌표가 5씩 증가
+			x+=15; //스레드에 의해서 x좌표가 5씩 증가
 		}
 	}//스레드 문장 구현
 
@@ -41,11 +46,9 @@ class Thread05 extends Frame implements Runnable{
 		Dimension d;//Diemnsion은 폭과 높이를 가지는 클래스
 		d=getSize();//프레임 윈도우 창 크기를 구현
 		g.setColor(Color.ORANGE); //글자색을 오렌지색으로 지정
-	
-		
-		
-		g.drawString("내일부터 장마가 시작됩니다. 시간당 00mm가 내리니 주의하시길 바랍니다.", x, d.height/2);		
-		
+		g.setFont(new Font("맑은고딕", Font.ITALIC, 30));
+		g.drawString("내일부터 장마가 시작됩니다.", x, d.height/2);		
+		if(x>d.width) x=0;
 		
 		
 		/*문제) 
@@ -63,7 +66,8 @@ class Thread05 extends Frame implements Runnable{
 public class ThreadTest05 {
 	public static void main(String[] args) {
 		
-		Thread05 th= new Thread05();
+		Thread05 th= new Thread05(); //Frame상속, Runnable구현 객체
+		
 		Thread th01 = new Thread(th);
 		th01.start();//멀티스레드 시작
 	}
