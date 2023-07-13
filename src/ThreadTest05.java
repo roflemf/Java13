@@ -46,9 +46,10 @@ class Thread05 extends Frame implements Runnable{
 		Dimension d;//Diemnsion은 폭과 높이를 가지는 클래스
 		d=getSize();//프레임 윈도우 창 크기를 구현
 		g.setColor(Color.ORANGE); //글자색을 오렌지색으로 지정
-		g.setFont(new Font("맑은고딕", Font.ITALIC, 30));
+		g.setFont(new Font("궁서체", Font.BOLD, 30));
 		g.drawString("내일부터 장마가 시작됩니다.", x, d.height/2);		
-		if(x>d.width) x=0;
+		if(x>d.width)//x좌표가 프레임 윈도우 너비를 벗어나면
+			x=0;//다시 처음부터 반복한다.
 		
 		
 		/*문제) 
