@@ -60,6 +60,11 @@ class Customer14 implements Runnable{
 			try {Thread.sleep(10);}catch(InterruptedException ie) {}
 			String name = Thread.currentThread().getName();
 			
+			if(eatFood() ==true) {// ==true 생략 가능
+				System.out.println(name+" ate a " + food);//음식을 먹었을떄 실행
+				
+			}
+			
 		}//while
 	}//run
 	
@@ -68,9 +73,41 @@ class Customer14 implements Runnable{
 	
 }//Customer14 class
 
-public class ThreadTest14 {
-	public static void main(String[] args) {
+//요리사 쓰레드
+class Cook14 implements Runnable{
 
+	private Table14 table;
+	
+	public Cook14() {} //생성자로 멤버변수 초기화
+	
+	public Cook14(Table14 table) {
+		this.table = table;
+	}
+	
+	@Override
+	public void run() {
+		while(true) {
+			int idx= (int)(Math.random()*table.dishNum());//random()은 0.0이상 1.0미만 실수 숫자 난수 발생
+														  //->*3하면 0.0이상 3.0미만 실수 숫자 난수
+														  //->(int)로 형변환하면 0이상 3미만
+														  //  즉 0부터 2사이 임의의 정수 숫자 난수 발생
+					table.add(table.dishNames[idx]);//테이블에 음식 추가
+					try {Thread.sleep(100);}catch(InterruptedException ie) {}
+		}//while
+	}//run()
+	
+}//Cook14 class
+
+public class ThreadTest14 {
+	public static void main(String[] args) throws Exception{ //예외처리?
+		Table14 table =  new Table14();
+		
+		new Thread(new Cook14(table),"cook").start(); //요리시 쓰레드 시작
+		new Thread(new Customer14(table, "donut"),"customer01").start();//첫번쨰 소비자 스레드 시작
+		new Thread(new Customer14(table, "burger"),"customer02").start();//두번째 소비자 스레드 시작
+		
+		Thread.sleep(5000); //5초뒤에
+		System.exit(0);//정상적인 강제 종료 => 무한정 락을 가지고 기다릴 수 없어서 강제종료함.
 	}
 
 }
